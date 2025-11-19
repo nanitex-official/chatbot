@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import ReactMarkdown from "react-markdown";
 interface Message {
   id: string;
   text: string;
@@ -28,7 +28,7 @@ export default function Chat() {
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!input.trim()) return;
 
     // Add user message
@@ -56,9 +56,9 @@ export default function Chat() {
       }
 
       const data = await response.json();
-      
+
       // Handle bot response - support both { reply: "..." } and { message: "..." } formats
-      const botReply = data.reply || data.message || "No response from bot";
+      const botReply = data.reply || data.output || "No response from bot";
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -88,7 +88,7 @@ export default function Chat() {
             AI Assistant
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Powered by n8n • Always here to help
+            Powered by NaniteX • Always here to help
           </p>
         </div>
       </div>
@@ -162,7 +162,9 @@ export default function Chat() {
                     : "bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-sm"
                 )}
               >
-                <p className="break-words">{message.text}</p>
+                <p className="break-words"><ReactMarkdown
+                  children={message.text}
+                /></p>
               </div>
 
               {message.sender === "user" && (
@@ -236,7 +238,7 @@ export default function Chat() {
             )}
           </Button>
         </form>
-        
+
         {/* Footer */}
         <div className="max-w-4xl mx-auto mt-3 text-center">
           <p className="text-xs text-slate-500">

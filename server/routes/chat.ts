@@ -37,7 +37,7 @@ export const handleChat: RequestHandler = async (
     const response = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: message.trim() }),
+      body: JSON.stringify({ chatInput: message.trim() }),
     });
 
     if (!response.ok) {
